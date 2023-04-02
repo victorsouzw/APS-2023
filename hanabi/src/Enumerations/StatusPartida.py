@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class StatusPartida(Enum):
     AGUARDANDO_INICIO = 1
     FINALIZADO = 2
