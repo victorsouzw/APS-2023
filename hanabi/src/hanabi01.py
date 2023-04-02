@@ -87,16 +87,11 @@ class PlayerInterface(DogPlayerInterface):
             game_state = self.board.get_estado()
             self.update_gui(game_state)
 
-    def receive_withdrawal_notification(self):
-        self.board.receber_notificacao_desistencia()
-        game_state = self.board.get_estado()
-        self.fill_main_window()
-        self.update_gui(game_state)
-        messagebox.showinfo(message = "O jogador desistiu. Partida encerrada!")
+    
         
 
     def update_gui(self, game_state):
-        self.update_menu_status()
+        
         jogadores = game_state.get_jogadores()
 
         self.mostrar_cartas_descartadas()
@@ -242,19 +237,9 @@ class PlayerInterface(DogPlayerInterface):
         infracoes_cometidas.grid(row=0, column=0, columnspan=2)
         numero_infracoes_cometidas.grid(row=1, column=0, columnspan=2)
 
-    #vai sair
-    def update_menu_status(self):
-        match_status = self.board.get_estado().get_status()
-        if match_status == 2 or match_status == 6:
-            self.menu_file.entryconfigure("Restaurar estado inicial", state="normal")
-        else:
-            self.menu_file.entryconfigure("Restaurar estado inicial", state="disabled")
-        if match_status == 1:
-            self.menu_file.entryconfigure("Iniciar jogo", state="normal")
-        else:
-            self.menu_file.entryconfigure("Iniciar jogo", state="disabled")
+   
 
-    #vai ficar
+    #feito
     def popup_dar_dica(self, carta):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
@@ -269,13 +254,13 @@ class PlayerInterface(DogPlayerInterface):
         button3 = Button(popup, text="Número", command= lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.NUMERO))
         button3.pack(side='bottom', pady=10)
 
-    #vai ficar
+    #feito
     def clicar_no_botao_de_dica(self, popup, carta, tipo_de_dica):
         popup.destroy()
         
             
             
-        #ok
+    #feito
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
@@ -290,27 +275,10 @@ class PlayerInterface(DogPlayerInterface):
         button3 = Button(popup, text="Descartar carta", command= lambda : self.descartar_carta(popup, carta))
         button3.pack(side='bottom', pady=10)
         
-        #pronto
+    #feito
     def jogar_carta(self, popup, carta):
         popup.destroy()
         print("estou dentro do jogar carta")
-        
-
-    #retirar 
-    def fim_de_jogo(self, pontuacao, mensagem):
-        messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
-        self.reset()
-
-    #retirar  
-    def reset(self):
-        self.board.reset()
-        self.played_cards.destroy()
-        self.dicas_e_infracoes.destroy()
-        self.discard_pile.destroy()
-        self.local_player_hand.destroy()
-        self.remote_player_hand.destroy()
-        self.fill_main_window()
-        self.update_gui(self.board.get_estado())
         
         ##pronto
     def descartar_carta(self, popup, carta):
@@ -330,16 +298,4 @@ class PlayerInterface(DogPlayerInterface):
         else: 
             messagebox.showinfo(message = "Aguarde seu turno para jogar!")
             
-    #vai sair
-    def receive_move(self, a_move):
-        a_move.pop("match_status", None)
-        move = DefaultMunch.fromDict(a_move)
-        mensagem = move._InterfaceImage__mensage
-        if mensagem != None:
-            pontuacao = len(move._InterfaceImage__area_cartas_jogadas)
-            messagebox.showinfo(message = mensagem)  + "pontuacao: " + str(pontuacao)
-            self.fim_de_jogo(pontuacao, mensagem)
-        else:
-            self.board.receber_jogada(move)
-            game_state = self.board.get_estado()
-            self.update_gui(game_state)
+   
