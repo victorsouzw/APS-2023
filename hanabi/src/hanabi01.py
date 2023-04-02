@@ -281,6 +281,7 @@ class PlayerInterface(DogPlayerInterface):
         else:
             self.menu_file.entryconfigure("Iniciar jogo", state="disabled")
 
+    #vai ficar
     def popup_dar_dica(self, carta):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
@@ -295,22 +296,13 @@ class PlayerInterface(DogPlayerInterface):
         button3 = Button(popup, text="Número", command= lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.NUMERO))
         button3.pack(side='bottom', pady=10)
 
+    #vai ficar
     def clicar_no_botao_de_dica(self, popup, carta, tipo_de_dica):
         popup.destroy()
-        mensagem = self.board.dar_dica(carta, tipo_de_dica)
-        if mensagem != "":
-            messagebox.showinfo(message=mensagem)
-        else:
-            game_state = self.board.get_estado()
-            self.update_gui(game_state)
-            
-            mensagem = game_state.get_mensagem()
-            if  mensagem != "":
-                pontuacao = len(game_state.get_area_cartas_jogadas())
-                self.fim_de_jogo(pontuacao, mensagem)
-            self.dog_server_interface.send_move(game_state.get_move_to_send())
+        
             
             
+        #ok
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
@@ -325,8 +317,10 @@ class PlayerInterface(DogPlayerInterface):
         button3 = Button(popup, text="Descartar carta", command= lambda : self.descartar_carta(popup, carta))
         button3.pack(side='bottom', pady=10)
         
+        #pronto
     def jogar_carta(self, popup, carta):
         popup.destroy()
+        print("estou dentro do jogar carta")
         
 
     #retirar 
@@ -348,6 +342,7 @@ class PlayerInterface(DogPlayerInterface):
         ##pronto
     def descartar_carta(self, popup, carta):
         popup.destroy()
+        print("estou dentro do descartar carta")
         
 
     #vai ficar

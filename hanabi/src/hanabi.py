@@ -1,5 +1,5 @@
-import player_interface
+import hanabi01
 
-player_interface.PlayerInterface()
+hanabi01.PlayerInterface()
 
 
