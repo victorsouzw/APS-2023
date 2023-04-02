@@ -106,12 +106,17 @@ class PlayerInterface(DogPlayerInterface):
         
         self.remote_player_hand.grid(row=0, column=0)       
         self.local_player_hand.grid(row=2, column=0)
-        
+        cartas = ["src/images/red4.png",
+                    "src/images/red4.png",
+                    "src/images/blue4.png",
+                    "src/images/white3.png",
+                    "src/images/green1.png"]
         for jogador in jogadores:
             if jogador.get_eh_local():
                 for i in range(len(jogador.get_mao_de_cartas())):
                     carta = jogador.get_mao_de_cartas()[i]
-                    img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
+                    
+                    img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
                     cartaM = ttk.Button(
                         self.local_player_hand,
                         image=img,
@@ -125,7 +130,7 @@ class PlayerInterface(DogPlayerInterface):
             else:
                 for i in range(len(jogador.get_mao_de_cartas())):
                     carta = jogador.get_mao_de_cartas()[i]
-                    img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
+                    img = ImageTk.PhotoImage(Image.open(cartas[i]).resize((125, 200)))
                     cartaM = ttk.Button(
                         self.remote_player_hand,
                         image=img,
@@ -146,10 +151,6 @@ class PlayerInterface(DogPlayerInterface):
        
         
         
-        
-        
-
-        
 
     #feito
     def mostrar_cartas_jogadas(self):
@@ -169,7 +170,7 @@ class PlayerInterface(DogPlayerInterface):
             cartaM.image = img
             cartaM.pack(side='left', fill='both')
 
-    #fica
+    #feito
     def mostra_baralho_compra(self, game_state):
         self.baralho_de_compras = Frame(self.main_window, width=200, height=200)
         self.baralho_de_compras.grid(row=0, column=1)
@@ -186,7 +187,7 @@ class PlayerInterface(DogPlayerInterface):
         cartaB.image = img
         cartaB.pack(side='left', fill='both')
 
-    #fica
+    #feito
     def mostra_dicas_e_infracoes(self):
         numero_total_de_dicas = 8
         self.dicas_e_infracoes = Frame(self.main_window, width=200, height=200)
@@ -280,22 +281,19 @@ class PlayerInterface(DogPlayerInterface):
         popup.destroy()
         print("estou dentro do jogar carta")
         
-        ##pronto
+        ##feito
     def descartar_carta(self, popup, carta):
         popup.destroy()
         print("estou dentro do descartar carta")
         
 
-    #vai ficar
+    #feito, resolver o board.selecionar_carta que conversa com dog
     def selecionar_carta(self, carta):
-        if self.board.get_estado().get_status() == 3:        
-            mensagem = self.board.selecionar_carta(carta)
-            
-            if mensagem == "DAR_DICA":
-                self.popup_dar_dica(carta)
-            else:
-                self.popup_jogar_descartar_carta(carta)
-        else: 
-            messagebox.showinfo(message = "Aguarde seu turno para jogar!")
+        mensagem = self.board.selecionar_carta(carta)
+        if mensagem == "DAR_DICA":
+            self.popup_dar_dica(carta)
+        else:
+            self.popup_jogar_descartar_carta(carta)
+        
             
    
