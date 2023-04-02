@@ -99,7 +99,7 @@ class PlayerInterface(DogPlayerInterface):
         self.update_menu_status()
         jogadores = game_state.get_jogadores()
 
-        self.mostrar_cartas_descartadas(game_state)
+        self.mostrar_cartas_descartadas()
         self.mostrar_cartas_jogadas()
         self.mostra_baralho_compra(game_state)
         self.mostra_dicas_e_infracoes()
@@ -141,57 +141,30 @@ class PlayerInterface(DogPlayerInterface):
                     cartaM.image = img
                     cartaM.pack(side='left', fill='both')
 
-    def mostrar_cartas_descartadas(self, game_state):
-
-        cartas_descartadas = game_state.get_area_descarte()
-
+    #feito
+    def mostrar_cartas_descartadas(self):
         titulo_cartas_descartadas = Label(self.discard_pile,
                                           text='Cartas descartadas',
                                           font=font.Font(size=12, weight='bold'))
         titulo_cartas_descartadas.grid(row=0, column=0)
 
-        textos = ['' for i in range(5)]
+       
         
-        cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
         
-        for carta in cartas_descartadas:
-            cor_atual = carta.get_cor() #.value - 1 # Enum inicia no índice 1
-            for i in cores:
-                if cores.get(i) == cor_atual:
-                    cor_atual = i
-            textos[cor_atual-1] += str(carta.get_numero())
         
         
 
-        for texto, i in zip(textos, range(len(cores))):
-            texto = list(texto)
-            texto.sort()
-            texto = ' '.join(texto)
-            linha = Label(self.discard_pile, text=texto, fg=cores.get(i+1), font=font.Font(size=12,))
-            linha.grid(row=i+1, column=0)
+        
 
-    #vai sair
+    #feito
     def mostrar_cartas_jogadas(self):
-        
         self.played_cards = Frame(self.main_window, width=100, height=200)
         self.played_cards.grid(row=1, column=0)
                
         cartas_mais_altas = [0 for i in range(5)]
-        
-        cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
-
-        for i in range(len(cores)):
-            carta_mais_alta = self.board.get_numero_carta_mais_alta_da_cor(cores.get(i+1))
-            if carta_mais_alta:
-                carta = Carta(cores.get(i+1), carta_mais_alta)
-                carta.carrega_imagem_carta(True, False)
-                cartas_mais_altas[i] = carta
 
         for carta in cartas_mais_altas:
-            if carta:
-                img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
-            else:
-                img = ImageTk.PhotoImage(Image.open("src/images/cardjogada.png").resize((125, 200)))
+            img = ImageTk.PhotoImage(Image.open("src/images/cardjogada.png").resize((125, 200)))
             cartaM = ttk.Button(
                 self.played_cards,
                 image=img,
