@@ -122,7 +122,7 @@ class PlayerInterface(DogPlayerInterface):
                         image=img,
                         padding=5,
                         compound='bottom',
-                        command = lambda carta = carta : self.selecionar_carta(carta)
+                        command = lambda carta = carta : self.selecionar_carta("src/images/card.png")
                     )
                     cartaM.image = img
                     cartaM.pack(side='left', fill='both')  
@@ -241,7 +241,7 @@ class PlayerInterface(DogPlayerInterface):
    
 
     #feito
-    def popup_dar_dica(self, carta):       
+    def popup_dar_dica(self):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
         popup.resizable(False,False)
@@ -250,19 +250,19 @@ class PlayerInterface(DogPlayerInterface):
         label.pack(side="top", pady=10)
         button1 = Button(popup, text="Voltar", command=popup.destroy)
         button1.pack(side='bottom', pady=10)
-        button2 = Button(popup, text="Cor", command = lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.COR))
+        button2 = Button(popup, text="Cor", command = lambda : print("dica de cor"))
         button2.pack(side='bottom', pady=10)
-        button3 = Button(popup, text="Número", command= lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.NUMERO))
+        button3 = Button(popup, text="Número", command= lambda : print("dica de numero"))
         button3.pack(side='bottom', pady=10)
 
     #feito
-    def clicar_no_botao_de_dica(self, popup, carta, tipo_de_dica):
+    def clicar_no_botao_de_dica(self, popup):
         popup.destroy()
         
             
             
     #feito
-    def popup_jogar_descartar_carta(self, carta):       
+    def popup_jogar_descartar_carta(self):       
         popup = Toplevel()
         popup.geometry("250x250+350+200")
         popup.resizable(False,False)
@@ -271,9 +271,9 @@ class PlayerInterface(DogPlayerInterface):
         label.pack(side="top", pady=10)
         button1 = Button(popup, text="Voltar", command=popup.destroy)
         button1.pack(side='bottom', pady=10)
-        button2 = Button(popup, text="Jogar carta", command = lambda : self.jogar_carta(popup, carta))
+        button2 = Button(popup, text="Jogar carta", command = lambda : print("jogou carta"))
         button2.pack(side='bottom', pady=10)
-        button3 = Button(popup, text="Descartar carta", command= lambda : self.descartar_carta(popup, carta))
+        button3 = Button(popup, text="Descartar carta", command= lambda : print("descartou carta"))
         button3.pack(side='bottom', pady=10)
         
     #feito
@@ -289,11 +289,13 @@ class PlayerInterface(DogPlayerInterface):
 
     #feito, resolver o board.selecionar_carta que conversa com dog
     def selecionar_carta(self, carta):
-        mensagem = self.board.selecionar_carta(carta)
-        if mensagem == "DAR_DICA":
-            self.popup_dar_dica(carta)
+        
+        if carta != "src/images/card.png":
+            print("ESTOU DENTRO DO IF ")
+            self.popup_dar_dica()
         else:
-            self.popup_jogar_descartar_carta(carta)
+            self.popup_jogar_descartar_carta()
+            print("ESTOU DENTRO DO ELSE ")
         
             
    
