@@ -1,0 +1,5 @@
+import hanabi
+
+hanabi.Hanabi()
+
+
