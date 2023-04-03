@@ -15,14 +15,14 @@ class PlayerInterface(DogPlayerInterface):
     def __init__(self):
         self.main_window = Tk()  # instanciar Tk
         self.board = Mesa()
-        self.dog_server_interface = DogActor()
+        
         self.fill_main_window()  # organização e preenchimento da janela
         game_state = self.board.get_estado()
         self.update_gui(game_state)
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
         
-        message = self.dog_server_interface.initialize(player_name, self)
-        messagebox.showinfo(message=message)
+        
+        
         self.opcao_escolhida = None
         self.main_window.mainloop()  # abrir a janela0
 
@@ -115,8 +115,6 @@ class PlayerInterface(DogPlayerInterface):
         
         #jogador 1
         for i in range(len(mao_de_cartas)):
-            
-            
             img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
             cartaM = ttk.Button(
                 self.local_player_hand,
@@ -130,7 +128,6 @@ class PlayerInterface(DogPlayerInterface):
 
         #jogador 2
         for i in range(len(mao_de_cartas)):
-            
             img = ImageTk.PhotoImage(Image.open(cartas[i]).resize((125, 200)))
             cartaM = ttk.Button(
                 self.remote_player_hand,
