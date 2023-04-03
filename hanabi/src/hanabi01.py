@@ -4,7 +4,7 @@ from tkinter import simpledialog, font
 from PIL import ImageTk, Image
 from dog.dog_interface import DogPlayerInterface
 from dog.dog_actor import DogActor
-from entities.mesa import Mesa
+
 from Enumerations.StatusPartida import StatusPartida
 from Enumerations.TipoDeDica import TipoDeDica
 from entities.carta import Carta
@@ -14,16 +14,15 @@ from munch import DefaultMunch
 class PlayerInterface(DogPlayerInterface):
     def __init__(self):
         self.main_window = Tk()  # instanciar Tk
-        self.board = Mesa()
+
         
         self.fill_main_window()  # organização e preenchimento da janela
-        game_state = self.board.get_estado()
-        self.update_gui(game_state)
+
+        self.update_gui()
+        
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
+        print("nome do jogador: " + player_name)
         
-        
-        
-        self.opcao_escolhida = None
         self.main_window.mainloop()  # abrir a janela0
 
     def fill_main_window(self):
@@ -47,60 +46,21 @@ class PlayerInterface(DogPlayerInterface):
         self.menu_file = Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label="File")
 
-        self.menu_file.add_command(label="Iniciar jogo", command=self.start_match)
-        self.menu_file.add_command(label="Restaurar estado inicial", command=self.start_game)
-
-    def start_match(self):
-        match_status = self.board.get_estado().get_status()
-        if match_status == 1:
-            answer = messagebox.askyesno("START", "Deseja iniciar uma nova partida?")
-            if answer:
-                print("im here")
-                start_status = self.dog_server_interface.start_match(2)
-                code = start_status.get_code()
-                message = start_status.get_message()
-                if code == "0" or code == "1":
-                    messagebox.showinfo(message=message)
-                else:  # (code=='2')
-                    players = start_status.get_players()
-                    local_player_id = start_status.get_local_id()
-                    self.board.start_match(players, local_player_id)
-                    game_state = self.board.get_estado()
-                    self.update_gui(game_state)
-                    
-                   
-
-    def receive_start(self, start_status):
-        self.start_game() 
-        players = start_status.get_players()
-        local_player_id = start_status.get_local_id()
-        self.board.start_match(players, local_player_id)
-        game_state = self.board.get_estado()
-        self.update_gui(game_state)
-        if self.board.jogador_local_inicia():
-            self.dog_server_interface.send_move(game_state.get_move_to_send())
-
-    def start_game(self):
-        match_status = self.board.get_estado().get_status()
-        if match_status == 2 or match_status == 6:
-            self.board.reset()
-            game_state = self.board.get_estado()
-            self.update_gui(game_state)
-
-    
+        self.menu_file.add_command(label="Iniciar jogo", command=print("iniciar jogo"))
+        self.menu_file.add_command(label="Restaurar estado inicial", command=print("restaura estado inicial"))
         
 
-    def update_gui(self, game_state):
+    def update_gui(self):
         
-        jogadores = game_state.get_jogadores()
+
 
         self.mostrar_cartas_descartadas()
         self.mostrar_cartas_jogadas()
-        self.mostra_baralho_compra(game_state)
+        self.mostra_baralho_compra()
         self.mostra_dicas_e_infracoes()
-        self.mostra_baralho_jogadores(jogadores)
+        self.mostra_baralho_jogadores()
         
-    def mostra_baralho_jogadores(self, jogadores):
+    def mostra_baralho_jogadores(self):
         self.local_player_hand = Frame(self.main_window, width=550, height=300)
         self.remote_player_hand = Frame(self.main_window, width=550, height=300)
         
@@ -146,10 +106,6 @@ class PlayerInterface(DogPlayerInterface):
                                           font=font.Font(size=12, weight='bold'))
         titulo_cartas_descartadas.grid(row=0, column=0)
 
-       
-        
-        
-
     #feito
     def mostrar_cartas_jogadas(self):
         self.played_cards = Frame(self.main_window, width=100, height=200)
@@ -169,7 +125,7 @@ class PlayerInterface(DogPlayerInterface):
             cartaM.pack(side='left', fill='both')
 
     #feito
-    def mostra_baralho_compra(self, game_state):
+    def mostra_baralho_compra(self):
         self.baralho_de_compras = Frame(self.main_window, width=200, height=200)
         self.baralho_de_compras.grid(row=0, column=1)
         
@@ -180,7 +136,6 @@ class PlayerInterface(DogPlayerInterface):
             padding=25,
             compound='bottom',
             style='RedCard.TLabel',
-            text=str(len(game_state.get_area_compra())),
         )
         cartaB.image = img
         cartaB.pack(side='left', fill='both')
@@ -236,8 +191,6 @@ class PlayerInterface(DogPlayerInterface):
         infracoes_cometidas.grid(row=0, column=0, columnspan=2)
         numero_infracoes_cometidas.grid(row=1, column=0, columnspan=2)
 
-   
-
     #feito
     def popup_dar_dica(self):       
         popup = Toplevel()
@@ -252,13 +205,7 @@ class PlayerInterface(DogPlayerInterface):
         button2.pack(side='bottom', pady=10)
         button3 = Button(popup, text="Número", command= lambda : print("dica de numero"))
         button3.pack(side='bottom', pady=10)
-
-    #feito
-    def clicar_no_botao_de_dica(self, popup):
-        popup.destroy()
-        
-            
-            
+       
     #feito
     def popup_jogar_descartar_carta(self):       
         popup = Toplevel()
@@ -275,25 +222,9 @@ class PlayerInterface(DogPlayerInterface):
         button3.pack(side='bottom', pady=10)
         
     #feito
-    def jogar_carta(self, popup, carta):
-        popup.destroy()
-        print("estou dentro do jogar carta")
-        
-        ##feito
-    def descartar_carta(self, popup, carta):
-        popup.destroy()
-        print("estou dentro do descartar carta")
-        
-
-    #feito, resolver o board.selecionar_carta que conversa com dog
     def selecionar_carta(self, carta):
         
         if carta != "src/images/card.png":
-            print("ESTOU DENTRO DO IF ")
             self.popup_dar_dica()
         else:
             self.popup_jogar_descartar_carta()
-            print("ESTOU DENTRO DO ELSE ")
-        
-            
-   
