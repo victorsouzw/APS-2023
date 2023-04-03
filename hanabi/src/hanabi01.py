@@ -111,35 +111,36 @@ class PlayerInterface(DogPlayerInterface):
                     "src/images/blue4.png",
                     "src/images/white3.png",
                     "src/images/green1.png"]
-        for jogador in jogadores:
-            if jogador.get_eh_local():
-                for i in range(len(jogador.get_mao_de_cartas())):
-                    carta = jogador.get_mao_de_cartas()[i]
-                    
-                    img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
-                    cartaM = ttk.Button(
-                        self.local_player_hand,
-                        image=img,
-                        padding=5,
-                        compound='bottom',
-                        command = lambda carta = carta : self.selecionar_carta("src/images/card.png")
-                    )
-                    cartaM.image = img
-                    cartaM.pack(side='left', fill='both')  
+        mao_de_cartas = [0 for i in range(5)]
+        
+        #jogador 1
+        for i in range(len(mao_de_cartas)):
+            
+            
+            img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
+            cartaM = ttk.Button(
+                self.local_player_hand,
+                image=img,
+                padding=5,
+                compound='bottom',
+                command = lambda : self.selecionar_carta("src/images/card.png")
+            )
+            cartaM.image = img
+            cartaM.pack(side='left', fill='both')  
 
-            else:
-                for i in range(len(jogador.get_mao_de_cartas())):
-                    carta = jogador.get_mao_de_cartas()[i]
-                    img = ImageTk.PhotoImage(Image.open(cartas[i]).resize((125, 200)))
-                    cartaM = ttk.Button(
-                        self.remote_player_hand,
-                        image=img,
-                        padding=5,
-                        compound='bottom',
-                        command = lambda carta = carta : self.selecionar_carta(carta)
-                    )
-                    cartaM.image = img
-                    cartaM.pack(side='left', fill='both')
+        #jogador 2
+        for i in range(len(mao_de_cartas)):
+            
+            img = ImageTk.PhotoImage(Image.open(cartas[i]).resize((125, 200)))
+            cartaM = ttk.Button(
+                self.remote_player_hand,
+                image=img,
+                padding=5,
+                compound='bottom',
+                command = lambda : self.selecionar_carta("another path")
+            )
+            cartaM.image = img
+            cartaM.pack(side='left', fill='both')
 
     #feito
     def mostrar_cartas_descartadas(self):
