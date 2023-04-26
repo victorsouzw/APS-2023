@@ -4,10 +4,9 @@ from tkinter import simpledialog, font
 from PIL import ImageTk, Image
 
 
-class Hanabi():
+class PlayerInterface():
     def __init__(self):
         self.main_window = Tk()  # instanciar Tk
-
         
         self.fill_main_window()  # organização e preenchimento da janela
 
@@ -39,8 +38,8 @@ class Hanabi():
         self.menu_file = Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label="File")
 
-        self.menu_file.add_command(label="Iniciar jogo", command=print("iniciar jogo"))
-        self.menu_file.add_command(label="Restaurar estado inicial", command=print("restaura estado inicial"))
+        self.menu_file.add_command(label="Iniciar jogo")
+        self.menu_file.add_command(label="Restaurar estado inicial")
         
 
     def preenche_tela(self):

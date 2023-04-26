@@ -1,5 +1,5 @@
 import hanabi
 
-hanabi.Hanabi()
+hanabi.PlayerInterface()
 
 
