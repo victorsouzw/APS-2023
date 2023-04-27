@@ -38,8 +38,8 @@ class PlayerInterface():
         self.menu_file = Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label="File")
 
-        self.menu_file.add_command(label="Iniciar jogo")
-        self.menu_file.add_command(label="Restaurar estado inicial")
+        self.menu_file.add_command(label="Iniciar jogo",command= lambda : messagebox.showinfo("Status", "O jogo foi iniciado"))
+        self.menu_file.add_command(label="Restaurar estado inicial", command= lambda : messagebox.showinfo("Status", "O jogo foi restaurado"))
         
 
     def preenche_tela(self):
