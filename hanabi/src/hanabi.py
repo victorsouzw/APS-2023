@@ -3,18 +3,26 @@ from tkinter import messagebox, ttk
 from tkinter import simpledialog, font
 from PIL import ImageTk, Image
 
+from dog.dog_interface import DogPlayerInterface
+from dog.dog_actor import DogActor
 
-class PlayerInterface():
+
+class PlayerInterface(DogPlayerInterface):
     def __init__(self):
         self.main_window = Tk()  # instanciar Tk
-        
+
+        self.dog_server_interface = DogActor()
+
         self.fill_main_window()  # organização e preenchimento da janela
 
         self.preenche_tela()
         
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
         print("nome do jogador: " + player_name)
-        
+
+        message = self.dog_server_interface.initialize(player_name, self)
+        messagebox.showinfo(message=message)
+
         self.main_window.mainloop()  # abrir a janela0
 
     def fill_main_window(self):
@@ -38,7 +46,8 @@ class PlayerInterface():
         self.menu_file = Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label="File")
 
-        self.menu_file.add_command(label="Iniciar jogo",command= lambda : messagebox.showinfo("Status", "O jogo foi iniciado"))
+        self.menu_file.add_command(label="Iniciar jogo",command= self.start_match)
+        self.menu_file.add_command(label="Iniciar jogo2",command= lambda : messagebox.showinfo("Status", "O jogo foi iniciado"))
         self.menu_file.add_command(label="Restaurar estado inicial", command= lambda : messagebox.showinfo("Status", "O jogo foi restaurado"))
         
 
@@ -87,6 +96,31 @@ class PlayerInterface():
             )
             cartaM.image = img
             cartaM.pack(side='left', fill='both')
+
+    def start_match(self):
+
+        answer = messagebox.askyesno("START", "Deseja iniciar uma nova partida?")
+        if answer:
+            start_status = self.dog_server_interface.start_match(2)
+            code = start_status.get_code()
+            message = start_status.get_message()
+            if code == "0" or code == "1":
+                messagebox.showinfo(message=message)
+            else:  # (code=='2')
+                players = start_status.get_players()
+                local_player_id = start_status.get_local_id()
+
+
+                messagebox.showinfo(message=start_status.get_message())
+            print(start_status.get_players)
+            print(start_status.get_local_id)
+
+    def receive_start(self, start_status):
+        players = start_status.get_players()
+        local_player_id = start_status.get_local_id()
+        print("A PARTIDA FOI INICIADA POR FAVOR")
+
+
 
     #feito
     def mostrar_cartas_descartadas(self):
